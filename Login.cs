@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Proyecto1.AccesosADatos;
 
 namespace Proyecto1
 {
@@ -20,22 +21,35 @@ namespace Proyecto1
 
         private void btnIngresar_Click(object sender, EventArgs e)
         {
-            Usuario usu = new Usuario(txtUsuario.Text, txtPassword.Text);
-
-            string usuCorrecto = "f";
-            string passCorrecto = "1";
-
-            if (txtUsuario.Text.Equals(usuCorrecto) && txtPassword.Text.Equals(passCorrecto))
+            if (txtUsuario.Text.Equals("") || txtPassword.Text.Equals(""))
             {
-                //nombre de user y pass correctos
-                Pantalla ventana = new Pantalla(usu);
-                ventana.Show();
-                this.Hide();
+                MessageBox.Show("Campos vacíos..");
             }
             else
             {
-                //Nombre de user o pass incorrecto
-                MessageBox.Show("Ingrese valores correctos...");
+                string nombreUsu = txtUsuario.Text;
+                string password = txtPassword.Text;
+                bool resultado = false;
+                try
+                {
+                    resultado = AD_Usuarios.ValidarUsuario(nombreUsu, password);
+                    if (resultado == true)
+                    {
+                        Usuario usu = new Usuario(nombreUsu, password);
+                        Pantalla ventana = new Pantalla(usu);
+                        ventana.Show();
+                        this.Hide();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Usuario inexistente");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al consultar usuario");
+                }
+
             }
         }
     }
