@@ -17,5 +17,11 @@ namespace Proyecto1
         {
             InitializeComponent();
         }
+
+        private void Pantalla_Load(object sender, EventArgs e)
+        {
+
+
+        }
     }
 }

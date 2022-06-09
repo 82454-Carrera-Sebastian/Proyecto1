@@ -32,5 +32,11 @@ namespace Proyecto1.Entidades
             get => FechaHoraHasta;
             set => FechaHoraHasta = value;
         }
+
+        public string MostrarCientificoLogueado(int legajoUsuario)
+        {
+            int cientifico = Usuario.ObtenerCientifico(legajoUsuario);
+            return cientifico.ToString();
+        }
     }
 }

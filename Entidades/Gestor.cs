@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Proyecto1.Entidades
 {
-    class Gestor
+    public class Gestor
     {
         private string DatosReservasTurnos; //Datos de reservas de los turnos confirmados y pendientes de confirmación
         private string CorreoRRT;
@@ -64,5 +65,16 @@ namespace Proyecto1.Entidades
             get => UsuarioLogueado;
             set => UsuarioLogueado = value;
         }
+
+        public string ObtenerUsuarioLogueado(Usuario usu, Sesión ses)
+        {
+            //var usuario = usu.NombreUsuario;
+            //return usuario;
+            int legajoUsuario = usu.ObtenerLegajo;
+            string nombreUsuario = ses.MostrarCientificoLogueado(legajoUsuario);
+            return nombreUsuario;
+        }
+
+        
     }
 }

@@ -54,7 +54,7 @@ namespace Proyecto1
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(100, 20);
-            this.txtPassword.TabIndex = 10;
+            this.txtPassword.TabIndex = 2;
             // 
             // label3
             // 
@@ -71,7 +71,7 @@ namespace Proyecto1
             this.txtUsuario.Location = new System.Drawing.Point(230, 99);
             this.txtUsuario.Name = "txtUsuario";
             this.txtUsuario.Size = new System.Drawing.Size(100, 20);
-            this.txtUsuario.TabIndex = 8;
+            this.txtUsuario.TabIndex = 1;
             // 
             // label2
             // 
@@ -107,6 +107,7 @@ namespace Proyecto1
             this.Controls.Add(this.label1);
             this.Name = "Login";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Login_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

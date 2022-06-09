@@ -19,7 +19,7 @@ namespace Proyecto1
             InitializeComponent();
         }
 
-        private void btnIngresar_Click(object sender, EventArgs e)
+        public void btnIngresar_Click(object sender, EventArgs e)
         {
             if (txtUsuario.Text.Equals("") || txtPassword.Text.Equals(""))
             {
@@ -51,6 +51,11 @@ namespace Proyecto1
                 }
 
             }
+        }
+
+        public void Login_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

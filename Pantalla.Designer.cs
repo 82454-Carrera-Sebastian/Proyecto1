@@ -34,7 +34,7 @@ namespace Proyecto1
             // 
             // btnRegistrarIng
             // 
-            this.btnRegistrarIng.Location = new System.Drawing.Point(74, 27);
+            this.btnRegistrarIng.Location = new System.Drawing.Point(12, 12);
             this.btnRegistrarIng.Name = "btnRegistrarIng";
             this.btnRegistrarIng.Size = new System.Drawing.Size(146, 54);
             this.btnRegistrarIng.TabIndex = 0;
@@ -49,6 +49,7 @@ namespace Proyecto1
             this.Controls.Add(this.btnRegistrarIng);
             this.Name = "Pantalla";
             this.Text = "Pantalla";
+            this.Load += new System.EventHandler(this.Pantalla_Load);
             this.ResumeLayout(false);
 
         }
