@@ -50,6 +50,8 @@ namespace Proyecto1.Entidades
             set => legajo = value;
         }
 
+        //Metodo llamado por la  clase sesion para obtener el nombre del cientifico
+        //busca en la BD el nombre del cientifico utilizando el legajo
         public string ObtenerCientifico(int legajoUsuario)
         {
             string nombreApellido = "";

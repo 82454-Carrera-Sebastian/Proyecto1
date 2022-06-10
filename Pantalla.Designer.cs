@@ -49,6 +49,7 @@ namespace Proyecto1
             this.Controls.Add(this.btnRegistrarIng);
             this.Name = "Pantalla";
             this.Text = "Pantalla";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Pantalla_FormClosing);
             this.Load += new System.EventHandler(this.Pantalla_Load);
             this.ResumeLayout(false);
 

@@ -35,6 +35,9 @@ namespace Proyecto1.Entidades
 
         }
 
+        //metodo llamado por el gestor que envia una lista con todos los RT de los cuales el cientifico es o fue responsable
+        //para que esta clase revise si es responsable actual
+        //si la fechaHasta devuelve un NULL es pq ese es responsaable actual
         public bool EsUsuarioVigente(string numRT)
         {
             bool Resultado = false;
@@ -73,42 +76,56 @@ namespace Proyecto1.Entidades
             return Resultado;
         }
 
-        //public void ObtenerRecursosTecnologicosDisponibles(DataTable tabla2)
-        //{
-        //    foreach (DataRow row in tabla2.Rows)
-        //    {
-        //        string cadenaConex = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"];
-        //        SqlConnection cn = new SqlConnection(cadenaConex);
-        //        try
-        //        {
-        //            SqlCommand cmd = new SqlCommand();
+        //Metodo llamado por el gestor que envia todos los RT de los cuales el cientifico es responsable para que sean mostrados
+        //Una vez obtenidos los datos del RT se llamara al metodo esActivo que es propio de RT para ver si este no se encuentra en
+        //mantenimiento en este momento
+        public DataTable MostrarRT(DataTable tabla2, RecursoTecnológico RT)
+        {
+            DataTable tabla = new DataTable();
+            foreach (DataRow row in tabla2.Rows)
+            {
+                string cadenaConex = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"];
+                SqlConnection cn = new SqlConnection(cadenaConex);
+                try
+                {
+                    SqlCommand cmd = new SqlCommand();
 
-        //            string consulta = "SELECT numRT FROM AsignacionRespTecnRT WHERE legRT LIKE '" + usu.ObtenerLegajo + "'";
+                    string consulta = "SELECT T.nombre, R.numRecurso, MA.nombre ,M.nombre  FROM RecursoTecnológico R JOIN TipoRecurso T ON R.idTipoRT = T.id JOIN Modelo M ON M.id = R.idModelo JOIN Marca MA ON MA.id = M.idMarca JOIN AsignacionRespTecnRT A ON A.nroRT = R.numRecurso WHERE  R.numRecurso LIKE '" + row + "' GROUP BY R.idTipoRT, T.nombre, R.numRecurso, MA.nombre ,M.nombre ";
 
-        //            cmd.Parameters.Clear();
+                    cmd.Parameters.Clear();
 
-        //            cmd.CommandType = CommandType.Text;
-        //            cmd.CommandText = consulta;
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = consulta;
 
-        //            cn.Open();
-        //            cmd.Connection = cn;
-
-        //            DataTable tabla = new DataTable();
-        //            SqlDataAdapter da = new SqlDataAdapter(cmd);
-
-        //            da.Fill(tabla);
-
+                    cn.Open();
+                    cmd.Connection = cn;
 
 
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw;
-        //        }
-        //        finally
-        //        {
-        //            cn.Close();
-        //        }
-        //    }
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+
+
+
+                    SqlDataReader dataReader = cmd.ExecuteReader();
+                    if (RT.esActivo(dataReader["R.numRecurso"].ToString()) && dataReader.Read())
+                    {
+                        da.Fill(tabla);
+                    }
+
+
+
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+                finally
+                {
+                    cn.Close();
+                }
+                
+            }
+            return tabla;
+
+        }
     }
 }

@@ -23,5 +23,19 @@ namespace Proyecto1
 
 
         }
+
+        //Metodo llamado por el gestor para cargar la grilla de RT y mostrarla
+        public void MostrarRTPorTipoDeRecurso(DataTable tablaRT)
+        {
+            //Colocar nombre de la grilla
+            //nombreGrilla.DataSource = tablaRT;
+        }
+
+        private void Pantalla_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
+
+        //proximo metodo: utilizar el vento cellclick para tomar la seleccion del usuario
     }
 }

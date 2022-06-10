@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Proyecto1.Entidades
 {
-    class Sesión
+    public class Sesión
     {
         private DateTime FechaHoraDesde;
         private DateTime FechaHoraHasta;
@@ -33,9 +33,10 @@ namespace Proyecto1.Entidades
             set => FechaHoraHasta = value;
         }
 
-        public string MostrarCientificoLogueado(int legajoUsuario)
+        //metodo llamado por el gestor para obtener el nombre del cientifico llamando a la clase Usuario
+        public string MostrarCientificoLogueado(int legajoUsuario, Usuario usu)
         {
-            int cientifico = Usuario.ObtenerCientifico(legajoUsuario);
+            int cientifico = int.Parse(usu.ObtenerCientifico(legajoUsuario));
             return cientifico.ToString();
         }
     }
