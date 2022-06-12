@@ -40,9 +40,8 @@ namespace Proyecto1.Entidades
         //metodo llamado por el gestor que envia una lista con todos los RT de los cuales el cientifico es o fue responsable
         //para que esta clase revise si es responsable actual
         //si la fechaHasta devuelve un NULL es pq ese es responsaable actual
-        public bool EsUsuarioVigente(string numRT)
+        public DataTable EsUsuarioVigente(string numRT, DataTable tabla2)
         {
-            bool Resultado = false;
             string cadenaConex = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"];
             SqlConnection cn = new SqlConnection(cadenaConex);
             try
@@ -63,9 +62,12 @@ namespace Proyecto1.Entidades
 
                 if (dataReader != null && dataReader.Read())
                 {
-                    if ((dataReader["fechaHasta"].ToString()) != "NULL")
+                    if ((dataReader["fechaHasta"].ToString()) != "")
                     {
-                        Resultado = true;
+                        tabla2.Rows.Add(numRT);
+                        //dataReader.Close();
+                        //SqlDataAdapter da = new SqlDataAdapter(cmd);
+                        //da.Fill(tabla2);
                     }
                 }
 
@@ -78,7 +80,7 @@ namespace Proyecto1.Entidades
             {
                 cn.Close();
             }
-            return Resultado;
+            return tabla2;
         }
 
         //Metodo llamado por el gestor que envia todos los RT de los cuales el cientifico es responsable para que sean mostrados
@@ -95,7 +97,7 @@ namespace Proyecto1.Entidades
                 {
                     SqlCommand cmd = new SqlCommand();
                     string numRecurso = row["nroRT"].ToString();
-                    string consulta = "SELECT T.nombre, R.numRecurso, MA.nombre ,M.nombre  FROM RecursoTecnológico R JOIN TipoRecurso T ON R.idTipoRT = T.id JOIN Modelo M ON M.id = R.idModelo JOIN Marca MA ON MA.id = M.idMarca JOIN AsignacionRespTecnRT A ON A.nroRT = R.numRecurso WHERE  R.numRecurso LIKE '" + numRecurso + "' GROUP BY R.idTipoRT, T.nombre, R.numRecurso, MA.nombre ,M.nombre ";
+                    string consulta = "SELECT T.nombre AS tiporecurso, R.numRecurso AS numrecurso, MA.nombre AS marca ,M.nombre AS modelo  FROM RecursoTecnológico R JOIN TipoRecurso T ON R.idTipoRT = T.id JOIN Modelo M ON M.id = R.idModelo JOIN Marca MA ON MA.id = M.idMarca JOIN AsignacionRespTecnRT A ON A.nroRT = R.numRecurso WHERE  R.numRecurso LIKE '" + numRecurso + "' GROUP BY R.idTipoRT, T.nombre, R.numRecurso, MA.nombre ,M.nombre ";
 
                     cmd.Parameters.Clear();
 
@@ -106,15 +108,6 @@ namespace Proyecto1.Entidades
                     cmd.Connection = cn;
                     SqlDataAdapter da = new SqlDataAdapter(cmd);
                     da.Fill(tabla);
-
-                    //SqlDataReader dataReader = cmd.ExecuteReader();
-                    //if (RT.esActivo(dataReader["R.numRecurso"].ToString()) && dataReader.Read())
-                    //{
-                    //    SqlDataAdapter da = new SqlDataAdapter(cmd);
-                    //    da.Fill(tabla);
-                    //}
-
-
 
                 }
                 catch (Exception ex)

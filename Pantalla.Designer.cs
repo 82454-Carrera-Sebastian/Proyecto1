@@ -38,12 +38,12 @@ namespace Proyecto1
             this.buttonBuscar = new System.Windows.Forms.Button();
             this.labelUsuario = new System.Windows.Forms.Label();
             this.labelActual = new System.Windows.Forms.Label();
-            this.dataGridViewDatosRT = new System.Windows.Forms.DataGridView();
-            this.nombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.numRecurso = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.nombre1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.nombre2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDatosRT)).BeginInit();
+            this.dataGridViewRT = new System.Windows.Forms.DataGridView();
+            this.tiporecurso = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.numrecurso = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.marca = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.modelo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewRT)).BeginInit();
             this.SuspendLayout();
             // 
             // btnRegistrarIng
@@ -132,45 +132,48 @@ namespace Proyecto1
             this.labelActual.TabIndex = 11;
             this.labelActual.Text = "Actual";
             // 
-            // dataGridViewDatosRT
+            // dataGridViewRT
             // 
-            this.dataGridViewDatosRT.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewDatosRT.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.nombre,
-            this.numRecurso,
-            this.nombre1,
-            this.nombre2});
-            this.dataGridViewDatosRT.Location = new System.Drawing.Point(12, 108);
-            this.dataGridViewDatosRT.Name = "dataGridViewDatosRT";
-            this.dataGridViewDatosRT.Size = new System.Drawing.Size(432, 150);
-            this.dataGridViewDatosRT.TabIndex = 12;
+            this.dataGridViewRT.AllowUserToAddRows = false;
+            this.dataGridViewRT.AllowUserToDeleteRows = false;
+            this.dataGridViewRT.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewRT.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.tiporecurso,
+            this.numrecurso,
+            this.marca,
+            this.modelo});
+            this.dataGridViewRT.Location = new System.Drawing.Point(240, 33);
+            this.dataGridViewRT.Name = "dataGridViewRT";
+            this.dataGridViewRT.ReadOnly = true;
+            this.dataGridViewRT.Size = new System.Drawing.Size(474, 176);
+            this.dataGridViewRT.TabIndex = 12;
             // 
-            // nombre
+            // tiporecurso
             // 
-            this.nombre.HeaderText = "Tipo Recurso";
-            this.nombre.Name = "nombre";
+            this.tiporecurso.HeaderText = "Tipo Recurso";
+            this.tiporecurso.Name = "tiporecurso";
             // 
-            // numRecurso
+            // numrecurso
             // 
-            this.numRecurso.HeaderText = "Numero Recurso";
-            this.numRecurso.Name = "numRecurso";
+            this.numrecurso.HeaderText = "Numero Recurso";
+            this.numrecurso.Name = "numrecurso";
             // 
-            // nombre1
+            // marca
             // 
-            this.nombre1.HeaderText = "Marca";
-            this.nombre1.Name = "nombre1";
+            this.marca.HeaderText = "Marca";
+            this.marca.Name = "marca";
             // 
-            // nombre2
+            // modelo
             // 
-            this.nombre2.HeaderText = "Modelo";
-            this.nombre2.Name = "nombre2";
+            this.modelo.HeaderText = "Modelo";
+            this.modelo.Name = "modelo";
             // 
             // Pantalla
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.dataGridViewDatosRT);
+            this.Controls.Add(this.dataGridViewRT);
             this.Controls.Add(this.labelActual);
             this.Controls.Add(this.labelUsuario);
             this.Controls.Add(this.labelRT);
@@ -181,10 +184,11 @@ namespace Proyecto1
             this.Controls.Add(this.lblfecha);
             this.Controls.Add(this.btnRegistrarIng);
             this.Name = "Pantalla";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Pantalla";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Pantalla_FormClosing);
             this.Load += new System.EventHandler(this.Pantalla_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDatosRT)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewRT)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -201,10 +205,10 @@ namespace Proyecto1
         private System.Windows.Forms.Label labelRT;
         private System.Windows.Forms.Label labelUsuario;
         private System.Windows.Forms.Label labelActual;
-        private System.Windows.Forms.DataGridView dataGridViewDatosRT;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nombre;
-        private System.Windows.Forms.DataGridViewTextBoxColumn numRecurso;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nombre1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nombre2;
+        private System.Windows.Forms.DataGridView dataGridViewRT;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tiporecurso;
+        private System.Windows.Forms.DataGridViewTextBoxColumn numrecurso;
+        private System.Windows.Forms.DataGridViewTextBoxColumn marca;
+        private System.Windows.Forms.DataGridViewTextBoxColumn modelo;
     }
 }

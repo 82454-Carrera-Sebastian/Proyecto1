@@ -15,7 +15,6 @@ namespace Proyecto1
     {
         private Gestor ges;
         private Usuario usu;
-
         public Pantalla(Usuario usu)
         {
             InitializeComponent();
@@ -31,8 +30,18 @@ namespace Proyecto1
         //Metodo llamado por el gestor para cargar la grilla de RT y mostrarla
         public void MostrarRTPorTipoDeRecurso(DataTable tablaRT)
         {
-            dataGridViewDatosRT.DataSource = tablaRT;
+            if (tablaRT.Rows.Count > 0)
+            {
+                MessageBox.Show("Recursos encontrados con exito");
+                dataGridViewRT.DataSource = tablaRT;
+            }
+            else
+            {
+                MessageBox.Show("No se encontro ningun recurso");
+            }
+
         }
+
 
         private void Pantalla_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -45,24 +54,24 @@ namespace Proyecto1
         }
 
         //TomarSeleccionRT y PedirFinFechaMotivo
-        private void dataGridViewDatosRT_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            int indice = e.RowIndex;
-            if (indice > -1)
-            {
-                DataGridViewRow filaSeleccionada = dataGridViewDatosRT.Rows[indice];
-                string nroRT = filaSeleccionada.Cells["numRecurso"].Value.ToString();
-                MessageBox.Show("Indique Fecha y motivo del mantenimiento");
-                lblfecha.Visible = true;
-                lblMotivo.Visible = true;
-                maskedTextBoxFecha.Visible = true;
-                richTextBoxMotivo.Visible = true;
-                labelRT.Visible = true;
-                buttonBuscar.Visible = true;
-                labelRT.Text = nroRT;
+        //private void dataGridViewDatosRT_CellClick(object sender, DataGridViewCellEventArgs e)
+        //{
+        //    int indice = e.RowIndex;
+        //    if (indice > -1)
+        //    {
+        //        DataGridViewRow filaSeleccionada = dataGridViewDatosRT.Rows[indice];
+        //        string nroRT = filaSeleccionada.Cells["numRecurso"].Value.ToString();
+        //        MessageBox.Show("Indique Fecha y motivo del mantenimiento");
+        //        lblfecha.Visible = true;
+        //        lblMotivo.Visible = true;
+        //        maskedTextBoxFecha.Visible = true;
+        //        richTextBoxMotivo.Visible = true;
+        //        labelRT.Visible = true;
+        //        buttonBuscar.Visible = true;
+        //        labelRT.Text = nroRT;
 
-            }
-        }
+        //    }
+        //}
 
         //TomasFechaYMotivo
         private void buttonBuscar_Click(object sender, EventArgs e)

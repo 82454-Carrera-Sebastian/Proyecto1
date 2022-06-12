@@ -90,6 +90,7 @@ namespace Proyecto1.Entidades
         public DataTable ObtenerRTDisponiblesDeRRT(string nombre)
         {
             DataTable tabla2 = new DataTable();
+            tabla2.Columns.Add("nroRT", typeof(string));
             string cadenaConex = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"];
             SqlConnection cn = new SqlConnection(cadenaConex);
             try
@@ -111,13 +112,10 @@ namespace Proyecto1.Entidades
 
                 da.Fill(tabla);
 
+
                 foreach (DataRow row in tabla.Rows)
                 {
-                    if (art.EsUsuarioVigente(row["nroRT"].ToString()))
-                    {
-                        SqlDataAdapter daa = new SqlDataAdapter(cmd);
-                        daa.Fill(tabla2);
-                    }
+                    tabla2 = art.EsUsuarioVigente(row["nroRT"].ToString(), tabla2);
                 }
 
             }
