@@ -70,7 +70,7 @@ namespace Proyecto1.Entidades
             {
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "SELECT fechaFin FROM Mantenimiento WHERE idRecurso LIKE '" + int.Parse(nroRecurso) + "'";
+                string consulta = "SELECT fechaFin FROM Mantenimiento WHERE idRecurso LIKE '" + int.Parse(nroRecurso) + "' AND fechaFin IS NULL";
 
                 cmd.Parameters.Clear();
 
@@ -82,9 +82,13 @@ namespace Proyecto1.Entidades
 
 
                 SqlDataReader dataReader = cmd.ExecuteReader();
-                if (dataReader == null && dataReader.Read())
+                if (dataReader != null && dataReader.Read())
                 {
-                    esact = false;
+                    if ((dataReader["fechaFin"].ToString()) != null)
+                    {
+                        esact = false;
+                    }
+
                 }
 
             }

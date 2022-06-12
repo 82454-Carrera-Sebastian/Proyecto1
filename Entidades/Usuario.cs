@@ -50,11 +50,11 @@ namespace Proyecto1.Entidades
             set => legajo = value;
         }
 
-        //Metodo llamado por la  clase sesion para obtener el nombre del cientifico
-        //busca en la BD el nombre del cientifico utilizando el legajo
-        public string ObtenerCientifico(int legajoUsuario)
+        //Metodo llamado por la  clase sesion para obtener el legajo del cientifico
+        //busca en la BD el legajo del cientifico utilizando el nombre
+        public string ObtenerCientifico(string nombre)
         {
-            string nombreApellido = "";
+            string legajo = "";
             DataTable tabla = new DataTable();
             string cadenaConex = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"];
             SqlConnection cn = new SqlConnection(cadenaConex);
@@ -62,7 +62,7 @@ namespace Proyecto1.Entidades
             {
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "SELECT nombre, apellido  FROM PersonalCientifico WHERE legajo LIKE '"+legajoUsuario+"'"; 
+                string consulta = "SELECT legPC FROM Usuario WHERE nomUsuario LIKE '"+nombre+"'"; 
 
                 cmd.Parameters.Clear();
 
@@ -76,7 +76,7 @@ namespace Proyecto1.Entidades
                 SqlDataReader dataReader = cmd.ExecuteReader();
                 if (dataReader != null && dataReader.Read())
                 {
-                    nombreApellido = dataReader["nombre, apellido"].ToString();
+                    legajo = (dataReader["legPC"].ToString());
                 }
 
             }
@@ -88,7 +88,7 @@ namespace Proyecto1.Entidades
             {
                 cn.Close();
             }
-            return nombreApellido;
+            return legajo;
         }
     }
 }

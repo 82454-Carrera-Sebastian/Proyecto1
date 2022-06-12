@@ -18,12 +18,19 @@ namespace Proyecto1.Entidades
         private string RTDisponible; // RT disponible de RRT
         private string TurnosConfYPend; //
         private string UsuarioLogueado;
-
-
+        private Usuario usu;
+        private Sesión ses;
+        private AsignacionResTecnicoRT art;
+        private RecursoTecnológico RT;
+        private Pantalla pan;
 
         public Gestor()
         {
-            
+            usu = new Usuario();
+            ses = new Sesión();
+            art = new AsignacionResTecnicoRT();
+            RT = new RecursoTecnológico();
+            pan = new Pantalla(usu);
         }
 
         public string DatosDeReservasDeTurnos
@@ -68,12 +75,11 @@ namespace Proyecto1.Entidades
             set => UsuarioLogueado = value;
         }
 
-        //Obtener nombre de usuario a traves de la clase usuario
-        //se pasa el legajo por parametro y se envia el mismo la clase sesion
-        public string ObtenerUsuarioLogueado(Usuario usu, Sesión ses)
+        //Obtener legajo de usuario a traves de la clase usuario
+        //se pasa el nombre por parametro y se envia el mismo la clase sesion
+        public string ObtenerUsuarioLogueado(string nombre)
         {
-            int legajoUsuario = usu.ObtenerLegajo;
-            string nombreUsuario = ses.MostrarCientificoLogueado(legajoUsuario, usu);
+            string nombreUsuario = usu.ObtenerCientifico(nombre);//ses.MostrarCientificoLogueado(nombre);
             return nombreUsuario;
         }
 
@@ -81,7 +87,7 @@ namespace Proyecto1.Entidades
         //el gestor obtendra una lista con todos los recursos tecnologicos de los que el cientifico es o fue responsable
         //esa lista sera enviada a la clase asignacion responsable tecnico que se encargara de ver si el cientifico es
         //responsable actual de ese RT, creando otra lista con todos los RT de los que el cientifico es responsable actual
-        public DataTable ObtenerRTDisponiblesDeRRT(Usuario usu, AsignacionResTecnicoRT art)
+        public DataTable ObtenerRTDisponiblesDeRRT(string nombre)
         {
             DataTable tabla2 = new DataTable();
             string cadenaConex = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"];
@@ -90,7 +96,7 @@ namespace Proyecto1.Entidades
             {
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "SELECT numRT FROM AsignacionRespTecnRT WHERE legRT LIKE '" + usu.ObtenerLegajo + "'";
+                string consulta = "SELECT nroRT FROM AsignacionRespTecnRT WHERE legRT LIKE '" + nombre + "'";
 
                 cmd.Parameters.Clear();
 
@@ -107,9 +113,10 @@ namespace Proyecto1.Entidades
 
                 foreach (DataRow row in tabla.Rows)
                 {
-                    if (art.EsUsuarioVigente(row["numRT"].ToString()))
+                    if (art.EsUsuarioVigente(row["nroRT"].ToString()))
                     {
-                        da.Fill(tabla2);
+                        SqlDataAdapter daa = new SqlDataAdapter(cmd);
+                        daa.Fill(tabla2);
                     }
                 }
 
@@ -123,19 +130,24 @@ namespace Proyecto1.Entidades
                 cn.Close();
             }
             return tabla2;
-        }
+       }
 
         //el gestor debe llamar a la clase asignacionResponsableTecnologico para que esta obtenga los datos de
-        //los RT que ese cientifico tiene disponible, para ello utilizara la "tabla2" creada en el metodo anterio
+        //los RT que ese cientifico tiene disponible, para ello utilizara la "tabla2" creada en el metodo anterior
 
-        public void ObtenerRecursosTecnologicosDisponibles(Usuario usu, AsignacionResTecnicoRT art, RecursoTecnológico RT, Pantalla pan)
+        public void ObtenerRecursosTecnologicosDisponibles(string nombre)
         {
                         
-            DataTable tablaRT = art.MostrarRT(ObtenerRTDisponiblesDeRRT(usu, art), RT);
+            DataTable tablaRT = art.MostrarRT(ObtenerRTDisponiblesDeRRT(ObtenerUsuarioLogueado(nombre)), RT);
 
             pan.MostrarRTPorTipoDeRecurso(tablaRT);
         }
 
+        //Metodo llamado por la pantalla para 
+        public void BuscarTurnosConfirmadosYPendientesDeConfirmacion(string nrort)
+        {
+
+        }
 
     }
 }

@@ -35,7 +35,11 @@ namespace Proyecto1
                     resultado = AD_Usuarios.ValidarUsuario(nombreUsu, password);
                     if (resultado == true)
                     {
-                        Usuario usu = new Usuario(nombreUsu, password);
+                        Usuario usu = new Usuario();//(nombreUsu, password);ç
+                        {
+                            usu.NombreUsuario = nombreUsu;
+                            usu.ClaveUsuario = password;
+                        }
                         Pantalla ventana = new Pantalla(usu);
                         ventana.Show();
                         this.Hide();

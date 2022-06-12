@@ -10,10 +10,12 @@ namespace Proyecto1.Entidades
     {
         private DateTime FechaHoraDesde;
         private DateTime FechaHoraHasta;
+        private Usuario usu;
 
         public Sesión(DateTime comienzo)
         {
             FechaDeHoraDesde = comienzo;
+            usu = new Usuario();
         }
 
         public Sesión()
@@ -33,11 +35,11 @@ namespace Proyecto1.Entidades
             set => FechaHoraHasta = value;
         }
 
-        //metodo llamado por el gestor para obtener el nombre del cientifico llamando a la clase Usuario
-        public string MostrarCientificoLogueado(int legajoUsuario, Usuario usu)
+        //metodo llamado por el gestor para obtener el legajo del cientifico llamando a la clase Usuario
+        public string MostrarCientificoLogueado(string nombre)
         {
-            int cientifico = int.Parse(usu.ObtenerCientifico(legajoUsuario));
-            return cientifico.ToString();
+            string cientifico = usu.ObtenerCientifico(nombre);
+            return cientifico;
         }
     }
 }

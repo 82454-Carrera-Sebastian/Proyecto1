@@ -30,33 +30,181 @@ namespace Proyecto1
         private void InitializeComponent()
         {
             this.btnRegistrarIng = new System.Windows.Forms.Button();
+            this.lblfecha = new System.Windows.Forms.Label();
+            this.richTextBoxMotivo = new System.Windows.Forms.RichTextBox();
+            this.lblMotivo = new System.Windows.Forms.Label();
+            this.maskedTextBoxFecha = new System.Windows.Forms.MaskedTextBox();
+            this.labelRT = new System.Windows.Forms.Label();
+            this.buttonBuscar = new System.Windows.Forms.Button();
+            this.labelUsuario = new System.Windows.Forms.Label();
+            this.labelActual = new System.Windows.Forms.Label();
+            this.dataGridViewDatosRT = new System.Windows.Forms.DataGridView();
+            this.nombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.numRecurso = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nombre1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nombre2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDatosRT)).BeginInit();
             this.SuspendLayout();
             // 
             // btnRegistrarIng
             // 
-            this.btnRegistrarIng.Location = new System.Drawing.Point(12, 12);
+            this.btnRegistrarIng.Location = new System.Drawing.Point(12, 33);
             this.btnRegistrarIng.Name = "btnRegistrarIng";
             this.btnRegistrarIng.Size = new System.Drawing.Size(146, 54);
             this.btnRegistrarIng.TabIndex = 0;
             this.btnRegistrarIng.Text = "Registrar ingreso Mantenimiento Correctivo";
             this.btnRegistrarIng.UseVisualStyleBackColor = true;
+            this.btnRegistrarIng.Click += new System.EventHandler(this.btnRegistrarIng_Click);
+            // 
+            // lblfecha
+            // 
+            this.lblfecha.AutoSize = true;
+            this.lblfecha.Location = new System.Drawing.Point(82, 295);
+            this.lblfecha.Name = "lblfecha";
+            this.lblfecha.Size = new System.Drawing.Size(40, 13);
+            this.lblfecha.TabIndex = 2;
+            this.lblfecha.Text = "Fecha:";
+            this.lblfecha.Visible = false;
+            // 
+            // richTextBoxMotivo
+            // 
+            this.richTextBoxMotivo.Location = new System.Drawing.Point(167, 321);
+            this.richTextBoxMotivo.Name = "richTextBoxMotivo";
+            this.richTextBoxMotivo.Size = new System.Drawing.Size(100, 96);
+            this.richTextBoxMotivo.TabIndex = 4;
+            this.richTextBoxMotivo.Text = "";
+            // 
+            // lblMotivo
+            // 
+            this.lblMotivo.AutoSize = true;
+            this.lblMotivo.Location = new System.Drawing.Point(82, 324);
+            this.lblMotivo.Name = "lblMotivo";
+            this.lblMotivo.Size = new System.Drawing.Size(42, 13);
+            this.lblMotivo.TabIndex = 5;
+            this.lblMotivo.Text = "Motivo:";
+            // 
+            // maskedTextBoxFecha
+            // 
+            this.maskedTextBoxFecha.Location = new System.Drawing.Point(167, 292);
+            this.maskedTextBoxFecha.Mask = "00/00/0000";
+            this.maskedTextBoxFecha.Name = "maskedTextBoxFecha";
+            this.maskedTextBoxFecha.Size = new System.Drawing.Size(100, 20);
+            this.maskedTextBoxFecha.TabIndex = 7;
+            this.maskedTextBoxFecha.ValidatingType = typeof(System.DateTime);
+            this.maskedTextBoxFecha.Visible = false;
+            // 
+            // labelRT
+            // 
+            this.labelRT.AutoSize = true;
+            this.labelRT.Location = new System.Drawing.Point(164, 261);
+            this.labelRT.Name = "labelRT";
+            this.labelRT.Size = new System.Drawing.Size(85, 13);
+            this.labelRT.TabIndex = 9;
+            this.labelRT.Text = "RTseleccionado";
+            this.labelRT.Visible = false;
+            // 
+            // buttonBuscar
+            // 
+            this.buttonBuscar.Location = new System.Drawing.Point(296, 321);
+            this.buttonBuscar.Name = "buttonBuscar";
+            this.buttonBuscar.Size = new System.Drawing.Size(75, 39);
+            this.buttonBuscar.TabIndex = 8;
+            this.buttonBuscar.Text = "Buscar";
+            this.buttonBuscar.UseVisualStyleBackColor = true;
+            this.buttonBuscar.Visible = false;
+            this.buttonBuscar.Click += new System.EventHandler(this.buttonBuscar_Click);
+            // 
+            // labelUsuario
+            // 
+            this.labelUsuario.AutoSize = true;
+            this.labelUsuario.Location = new System.Drawing.Point(13, 14);
+            this.labelUsuario.Name = "labelUsuario";
+            this.labelUsuario.Size = new System.Drawing.Size(46, 13);
+            this.labelUsuario.TabIndex = 10;
+            this.labelUsuario.Text = "Usuario:";
+            // 
+            // labelActual
+            // 
+            this.labelActual.AutoSize = true;
+            this.labelActual.Location = new System.Drawing.Point(65, 14);
+            this.labelActual.Name = "labelActual";
+            this.labelActual.Size = new System.Drawing.Size(37, 13);
+            this.labelActual.TabIndex = 11;
+            this.labelActual.Text = "Actual";
+            // 
+            // dataGridViewDatosRT
+            // 
+            this.dataGridViewDatosRT.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewDatosRT.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.nombre,
+            this.numRecurso,
+            this.nombre1,
+            this.nombre2});
+            this.dataGridViewDatosRT.Location = new System.Drawing.Point(12, 108);
+            this.dataGridViewDatosRT.Name = "dataGridViewDatosRT";
+            this.dataGridViewDatosRT.Size = new System.Drawing.Size(432, 150);
+            this.dataGridViewDatosRT.TabIndex = 12;
+            // 
+            // nombre
+            // 
+            this.nombre.HeaderText = "Tipo Recurso";
+            this.nombre.Name = "nombre";
+            // 
+            // numRecurso
+            // 
+            this.numRecurso.HeaderText = "Numero Recurso";
+            this.numRecurso.Name = "numRecurso";
+            // 
+            // nombre1
+            // 
+            this.nombre1.HeaderText = "Marca";
+            this.nombre1.Name = "nombre1";
+            // 
+            // nombre2
+            // 
+            this.nombre2.HeaderText = "Modelo";
+            this.nombre2.Name = "nombre2";
             // 
             // Pantalla
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.dataGridViewDatosRT);
+            this.Controls.Add(this.labelActual);
+            this.Controls.Add(this.labelUsuario);
+            this.Controls.Add(this.labelRT);
+            this.Controls.Add(this.buttonBuscar);
+            this.Controls.Add(this.maskedTextBoxFecha);
+            this.Controls.Add(this.lblMotivo);
+            this.Controls.Add(this.richTextBoxMotivo);
+            this.Controls.Add(this.lblfecha);
             this.Controls.Add(this.btnRegistrarIng);
             this.Name = "Pantalla";
             this.Text = "Pantalla";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Pantalla_FormClosing);
             this.Load += new System.EventHandler(this.Pantalla_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDatosRT)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.Button btnRegistrarIng;
+        private System.Windows.Forms.Label lblfecha;
+        private System.Windows.Forms.RichTextBox richTextBoxMotivo;
+        private System.Windows.Forms.Label lblMotivo;
+        private System.Windows.Forms.MaskedTextBox maskedTextBoxFecha;
+        private System.Windows.Forms.Button buttonBuscar;
+        private System.Windows.Forms.Label labelRT;
+        private System.Windows.Forms.Label labelUsuario;
+        private System.Windows.Forms.Label labelActual;
+        private System.Windows.Forms.DataGridView dataGridViewDatosRT;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nombre;
+        private System.Windows.Forms.DataGridViewTextBoxColumn numRecurso;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nombre1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nombre2;
     }
 }

@@ -12,6 +12,7 @@ namespace Proyecto1.Entidades
     {
         private DateTime FechaHoraDesde;
         private DateTime FechaHoraHasta;
+        private RecursoTecnológico RT;
 
         public DateTime FechaDeHoraDesde
         {
@@ -29,6 +30,7 @@ namespace Proyecto1.Entidades
         {
             FechaHoraDesde = fechaHoraDesde;
             FechaHoraHasta = fechaHoraHasta;
+            RT = new RecursoTecnológico();
         }
         public AsignacionResTecnicoRT()
         {
@@ -47,7 +49,7 @@ namespace Proyecto1.Entidades
             {
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "SELECT FechaHasta FROM AsignacionRespTecnRT WHERE numRT LIKE '" + int.Parse(numRT) + "'";
+                string consulta = "SELECT fechaHasta FROM AsignacionRespTecnRT WHERE nroRT LIKE '" + int.Parse(numRT) + "'";
 
                 cmd.Parameters.Clear();
 
@@ -59,9 +61,12 @@ namespace Proyecto1.Entidades
 
                 SqlDataReader dataReader = cmd.ExecuteReader();
 
-                if (dataReader == null && dataReader.Read())
+                if (dataReader != null && dataReader.Read())
                 {
-                    Resultado = true;
+                    if ((dataReader["fechaHasta"].ToString()) != "NULL")
+                    {
+                        Resultado = true;
+                    }
                 }
 
             }
@@ -78,19 +83,19 @@ namespace Proyecto1.Entidades
 
         //Metodo llamado por el gestor que envia todos los RT de los cuales el cientifico es responsable para que sean mostrados
         //Una vez obtenidos los datos del RT se llamara al metodo esActivo que es propio de RT para ver si este no se encuentra en
-        //mantenimiento en este momento
+        //mantenimiento en este momento row["Numero"].ToString()
         public DataTable MostrarRT(DataTable tabla2, RecursoTecnológico RT)
         {
             DataTable tabla = new DataTable();
-            foreach (DataRow row in tabla2.Rows)
+            foreach (DataRow row in tabla2.Rows) 
             {
                 string cadenaConex = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"];
                 SqlConnection cn = new SqlConnection(cadenaConex);
                 try
                 {
                     SqlCommand cmd = new SqlCommand();
-
-                    string consulta = "SELECT T.nombre, R.numRecurso, MA.nombre ,M.nombre  FROM RecursoTecnológico R JOIN TipoRecurso T ON R.idTipoRT = T.id JOIN Modelo M ON M.id = R.idModelo JOIN Marca MA ON MA.id = M.idMarca JOIN AsignacionRespTecnRT A ON A.nroRT = R.numRecurso WHERE  R.numRecurso LIKE '" + row + "' GROUP BY R.idTipoRT, T.nombre, R.numRecurso, MA.nombre ,M.nombre ";
+                    string numRecurso = row["nroRT"].ToString();
+                    string consulta = "SELECT T.nombre, R.numRecurso, MA.nombre ,M.nombre  FROM RecursoTecnológico R JOIN TipoRecurso T ON R.idTipoRT = T.id JOIN Modelo M ON M.id = R.idModelo JOIN Marca MA ON MA.id = M.idMarca JOIN AsignacionRespTecnRT A ON A.nroRT = R.numRecurso WHERE  R.numRecurso LIKE '" + numRecurso + "' GROUP BY R.idTipoRT, T.nombre, R.numRecurso, MA.nombre ,M.nombre ";
 
                     cmd.Parameters.Clear();
 
@@ -99,17 +104,15 @@ namespace Proyecto1.Entidades
 
                     cn.Open();
                     cmd.Connection = cn;
-
-
                     SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    da.Fill(tabla);
 
-
-
-                    SqlDataReader dataReader = cmd.ExecuteReader();
-                    if (RT.esActivo(dataReader["R.numRecurso"].ToString()) && dataReader.Read())
-                    {
-                        da.Fill(tabla);
-                    }
+                    //SqlDataReader dataReader = cmd.ExecuteReader();
+                    //if (RT.esActivo(dataReader["R.numRecurso"].ToString()) && dataReader.Read())
+                    //{
+                    //    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    //    da.Fill(tabla);
+                    //}
 
 
 
