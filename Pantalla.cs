@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -30,6 +31,7 @@ namespace Proyecto1
         //Metodo llamado por el gestor para cargar la grilla de RT y mostrarla
         public void MostrarRTPorTipoDeRecurso(DataTable tablaRT)
         {
+            //cargarGrilla(tablaRT);
             if (tablaRT.Rows.Count > 0)
             {
                 MessageBox.Show("Recursos encontrados con exito");
@@ -42,6 +44,16 @@ namespace Proyecto1
 
         }
 
+        ////Metodo para cargar grilla
+        //private void cargarGrilla(DataTable tablaRT)
+        //{
+        //    dataGridViewRT.Rows.Clear();
+        //    foreach (DataRow row in tablaRT.Rows)
+        //    {
+        //        dataGridViewRT.Rows.Add(row["tiporecurso"].ToString(), row["numrecurso"].ToString(), row["marca"].ToString(), row["modelo"].ToString());
+        //    }
+        //}
+
 
         private void Pantalla_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -53,32 +65,6 @@ namespace Proyecto1
 
         }
 
-        //TomarSeleccionRT y PedirFinFechaMotivo
-        //private void dataGridViewDatosRT_CellClick(object sender, DataGridViewCellEventArgs e)
-        //{
-        //    int indice = e.RowIndex;
-        //    if (indice > -1)
-        //    {
-        //        DataGridViewRow filaSeleccionada = dataGridViewDatosRT.Rows[indice];
-        //        string nroRT = filaSeleccionada.Cells["numRecurso"].Value.ToString();
-        //        MessageBox.Show("Indique Fecha y motivo del mantenimiento");
-        //        lblfecha.Visible = true;
-        //        lblMotivo.Visible = true;
-        //        maskedTextBoxFecha.Visible = true;
-        //        richTextBoxMotivo.Visible = true;
-        //        labelRT.Visible = true;
-        //        buttonBuscar.Visible = true;
-        //        labelRT.Text = nroRT;
-
-        //    }
-        //}
-
-        //TomasFechaYMotivo
-        private void buttonBuscar_Click(object sender, EventArgs e)
-        {
-            //oGestor.BuscarTurnosConfirmadosYPendientesDeConfirmacion();
-        }
-
         //PRIMER METODO EJECUTADO btn que llama caso de uso
         private void btnRegistrarIng_Click(object sender, EventArgs e)
         {
@@ -86,5 +72,70 @@ namespace Proyecto1
             
             ges.ObtenerRecursosTecnologicosDisponibles(labelActual.Text);
         }
+
+
+
+        //TomarSeleccionRT y PedirFinFechaMotivo
+        private void dataGridViewRT_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int indice = e.RowIndex;
+            if (indice > -1)
+            {
+                DataGridViewRow filaSeleccionada = dataGridViewRT.Rows[indice];
+                string nroRT = filaSeleccionada.Cells["numRecurso"].Value.ToString();
+                MessageBox.Show("Indique Fecha y motivo del mantenimiento");
+                lblfecha.Visible = true;
+                lblMotivo.Visible = true;
+                maskedTextBoxFecha.Visible = true;
+                richTextBoxMotivo.Visible = true;
+                labelRT.Visible = true;
+                buttonBuscar.Visible = true;
+                labelRT.Text = "Recurso tecnológico número" + nroRT;
+
+            }
+        }
+
+        //TomasFechaYMotivo
+        private void buttonBuscar_Click(object sender, EventArgs e)
+        {
+            //ges = new Gestor();
+           ges.BuscarTurnosConfirmadosYPendientesDeConfirmacion(labelRT.Text, maskedTextBoxFecha.Text);
+        }
+
+        //public void MostrarReservasDeTurnos(DataTable tablaTurnos)
+        //{
+        //    string cadenaConex = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"];
+        //    SqlConnection cn = new SqlConnection(cadenaConex);
+        //    try
+        //    {
+        //        foreach (DataRow row in tablaTurnos.Rows)
+        //        {
+        //            SqlCommand cmd = new SqlCommand();
+
+        //            string consulta = "SELECT T.fechaHoraInicio, P.apellido, P.nombre, P.correoInst FROM Turno T JOIN PersonalCientifico P ON T.idPersonal = P.legajo WHERE T.id LIKE '" + row["id"].ToString() + "'";
+
+        //            cmd.Parameters.Clear();
+
+        //            cmd.CommandType = CommandType.Text;
+        //            cmd.CommandText = consulta;
+
+        //            cn.Open();
+        //            cmd.Connection = cn;
+
+
+
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw;
+        //    }
+        //    finally
+        //    {
+        //        cn.Close();
+        //    }
+
+        //}
     }
 }

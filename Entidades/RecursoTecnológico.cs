@@ -15,11 +15,13 @@ namespace Proyecto1.Entidades
         private int PeriodicidadMantPreventivo;
         private int DuracionMantPreventivo;
         private int FraccionHorarioTurnos;
+        private Turno tur;
 
         public RecursoTecnológico(int numRT, DateTime fechaAlta)
         {
             NumeroRT = numRT;
             FechaAlta = fechaAlta;
+            tur = new Turno();
         }
 
         public RecursoTecnológico()
@@ -84,7 +86,7 @@ namespace Proyecto1.Entidades
                 SqlDataReader dataReader = cmd.ExecuteReader();
                 if (dataReader != null && dataReader.Read())
                 {
-                    if ((dataReader["fechaFin"].ToString()) != null)
+                    if ((dataReader["fechaFin"].ToString()) == "")
                     {
                         esact = false;
                     }
@@ -102,7 +104,52 @@ namespace Proyecto1.Entidades
             }
             return esact;
         }
-    }
 
-    
+
+        //Metodo llamado por el gestor para obtener turnos cancelables. El RecursoTecnologico obtendra los turnos disponibles, 
+        //los Turnos veran si son cancelables preguntandoles al cambioDeEstadoTurno si es actual y
+        //el actual le pregunta a estado si es cancelable, es decir si estan pendientes o confirmadas
+        public DataTable ObtenerTurnos(string nrort, string fechaFin)
+        {
+            DataTable tabla2 = new DataTable();
+            string cadenaConex = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"];
+            SqlConnection cn = new SqlConnection(cadenaConex);
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+                string consulta = "SELECT id FROM Turno WHERE idRecurso LIKE '" + nrort + "' ";
+
+                cmd.Parameters.Clear();
+
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = consulta;
+
+                cn.Open();
+                cmd.Connection = cn;
+
+
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                DataTable tabla = new DataTable();
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+
+                da.Fill(tabla);
+
+
+                foreach (DataRow row in tabla.Rows)
+                {
+                    tabla2 = tur.EsCancelable(row["id"].ToString(), tabla2, fechaFin);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return tabla2;
+        }
+    }
 }

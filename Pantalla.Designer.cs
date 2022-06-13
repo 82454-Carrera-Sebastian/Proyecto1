@@ -59,11 +59,11 @@ namespace Proyecto1
             // lblfecha
             // 
             this.lblfecha.AutoSize = true;
-            this.lblfecha.Location = new System.Drawing.Point(82, 295);
+            this.lblfecha.Location = new System.Drawing.Point(13, 295);
             this.lblfecha.Name = "lblfecha";
-            this.lblfecha.Size = new System.Drawing.Size(40, 13);
+            this.lblfecha.Size = new System.Drawing.Size(125, 13);
             this.lblfecha.TabIndex = 2;
-            this.lblfecha.Text = "Fecha:";
+            this.lblfecha.Text = "Fecha fin mantenimiento:";
             this.lblfecha.Visible = false;
             // 
             // richTextBoxMotivo
@@ -73,6 +73,7 @@ namespace Proyecto1
             this.richTextBoxMotivo.Size = new System.Drawing.Size(100, 96);
             this.richTextBoxMotivo.TabIndex = 4;
             this.richTextBoxMotivo.Text = "";
+            this.richTextBoxMotivo.Visible = false;
             // 
             // lblMotivo
             // 
@@ -82,13 +83,14 @@ namespace Proyecto1
             this.lblMotivo.Size = new System.Drawing.Size(42, 13);
             this.lblMotivo.TabIndex = 5;
             this.lblMotivo.Text = "Motivo:";
+            this.lblMotivo.Visible = false;
             // 
             // maskedTextBoxFecha
             // 
             this.maskedTextBoxFecha.Location = new System.Drawing.Point(167, 292);
-            this.maskedTextBoxFecha.Mask = "00/00/0000";
+            this.maskedTextBoxFecha.Mask = "00/00/0000 00:00";
             this.maskedTextBoxFecha.Name = "maskedTextBoxFecha";
-            this.maskedTextBoxFecha.Size = new System.Drawing.Size(100, 20);
+            this.maskedTextBoxFecha.Size = new System.Drawing.Size(118, 20);
             this.maskedTextBoxFecha.TabIndex = 7;
             this.maskedTextBoxFecha.ValidatingType = typeof(System.DateTime);
             this.maskedTextBoxFecha.Visible = false;
@@ -147,26 +149,31 @@ namespace Proyecto1
             this.dataGridViewRT.ReadOnly = true;
             this.dataGridViewRT.Size = new System.Drawing.Size(474, 176);
             this.dataGridViewRT.TabIndex = 12;
+            this.dataGridViewRT.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewRT_CellClick);
             // 
             // tiporecurso
             // 
             this.tiporecurso.HeaderText = "Tipo Recurso";
             this.tiporecurso.Name = "tiporecurso";
+            this.tiporecurso.ReadOnly = true;
             // 
             // numrecurso
             // 
             this.numrecurso.HeaderText = "Numero Recurso";
             this.numrecurso.Name = "numrecurso";
+            this.numrecurso.ReadOnly = true;
             // 
             // marca
             // 
             this.marca.HeaderText = "Marca";
             this.marca.Name = "marca";
+            this.marca.ReadOnly = true;
             // 
             // modelo
             // 
             this.modelo.HeaderText = "Modelo";
             this.modelo.Name = "modelo";
+            this.modelo.ReadOnly = true;
             // 
             // Pantalla
             // 

@@ -62,7 +62,7 @@ namespace Proyecto1.Entidades
 
                 if (dataReader != null && dataReader.Read())
                 {
-                    if ((dataReader["fechaHasta"].ToString()) != "")
+                    if ((dataReader["fechaHasta"].ToString()) == "")
                     {
                         tabla2.Rows.Add(numRT);
                         //dataReader.Close();
@@ -85,7 +85,8 @@ namespace Proyecto1.Entidades
 
         //Metodo llamado por el gestor que envia todos los RT de los cuales el cientifico es responsable para que sean mostrados
         //Una vez obtenidos los datos del RT se llamara al metodo esActivo que es propio de RT para ver si este no se encuentra en
-        //mantenimiento en este momento row["Numero"].ToString()
+        //mantenimiento en este momento
+        //row["Numero"].ToString()
         public DataTable MostrarRT(DataTable tabla2, RecursoTecnológico RT)
         {
             DataTable tabla = new DataTable();
@@ -96,7 +97,7 @@ namespace Proyecto1.Entidades
                 try
                 {
                     SqlCommand cmd = new SqlCommand();
-                    string numRecurso = row["nroRT"].ToString();
+                    string numRecurso = row["id"].ToString();
                     string consulta = "SELECT T.nombre AS tiporecurso, R.numRecurso AS numrecurso, MA.nombre AS marca ,M.nombre AS modelo  FROM RecursoTecnológico R JOIN TipoRecurso T ON R.idTipoRT = T.id JOIN Modelo M ON M.id = R.idModelo JOIN Marca MA ON MA.id = M.idMarca JOIN AsignacionRespTecnRT A ON A.nroRT = R.numRecurso WHERE  R.numRecurso LIKE '" + numRecurso + "' GROUP BY R.idTipoRT, T.nombre, R.numRecurso, MA.nombre ,M.nombre ";
 
                     cmd.Parameters.Clear();
@@ -106,8 +107,14 @@ namespace Proyecto1.Entidades
 
                     cn.Open();
                     cmd.Connection = cn;
-                    SqlDataAdapter da = new SqlDataAdapter(cmd);
-                    da.Fill(tabla);
+
+                    if (RT.esActivo(numRecurso))
+                    {
+
+                        //SqlDataReader dataReader = cmd.ExecuteReader();
+                        SqlDataAdapter da = new SqlDataAdapter(cmd);
+                        da.Fill(tabla);
+                    }
 
                 }
                 catch (Exception ex)

@@ -55,5 +55,15 @@ namespace Proyecto1.Entidades
             get => EsCancelable;
             set => EsCancelable = value;
         }
+
+        public bool esCancelable(string estado)
+        {
+            bool resultado = false;
+            if (estado == "confirmado" || estado == "pendiente")
+            {
+                resultado = true;
+            }
+            return resultado;
+        }
     }
 }
