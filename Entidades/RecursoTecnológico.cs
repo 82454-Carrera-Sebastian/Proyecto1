@@ -107,7 +107,8 @@ namespace Proyecto1.Entidades
 
 
         //Metodo llamado por el gestor para obtener turnos cancelables. El RecursoTecnologico obtendra los turnos disponibles, 
-        //los Turnos veran si son cancelables preguntandoles al cambioDeEstadoTurno si es actual y
+        //los Turnos veran si son cancelables (obteniendo los datos del ultimo estado) y
+        //preguntandoles al cambioDeEstadoTurno si es actual (es decir si esta dentro del intervalo de tiempo del mantenimiento) y
         //el actual le pregunta a estado si es cancelable, es decir si estan pendientes o confirmadas
         public DataTable ObtenerTurnos(string nrort, string fechaFin)
         {
@@ -151,5 +152,16 @@ namespace Proyecto1.Entidades
             }
             return tabla2;
         }
+
+        //Metod llamado por le gestor para obtenrer los datos de los turnos a cancelar
+        //este metodo llamara a la clase turno para obtener fechaHoraInicio y el resto de los datos
+        public DataTable ObtenerDatosReserva(string id, DataTable TablaDatosTurnos)
+        {
+
+            TablaDatosTurnos = tur.MostrarFechaHora(id, TablaDatosTurnos);
+            return TablaDatosTurnos;
+        }
+        
     }
+
 }

@@ -28,31 +28,31 @@ namespace Proyecto1
 
         }
 
-        //Metodo llamado por el gestor para cargar la grilla de RT y mostrarla
-        public void MostrarRTPorTipoDeRecurso(DataTable tablaRT)
+        //PRIMER METODO EJECUTADO btn que llama caso de uso
+        private void btnRegistrarIng_Click(object sender, EventArgs e)
         {
-            //cargarGrilla(tablaRT);
-            if (tablaRT.Rows.Count > 0)
-            {
-                MessageBox.Show("Recursos encontrados con exito");
-                dataGridViewRT.DataSource = tablaRT;
-            }
-            else
-            {
-                MessageBox.Show("No se encontro ningun recurso");
-            }
+            //ges = new Gestor();
+            //ges.ObtenerRecursosTecnologicosDisponibles(labelActual.Text);
+            ges = new Gestor();
+            MostrarRTPorTipoDeRecurso(labelActual.Text);
+        }
+
+        //Metodo llamado por el gestor para cargar la grilla de RT y mostrarla
+        public void MostrarRTPorTipoDeRecurso(string nombre)
+        {
+            //if (tablaRT.Rows.Count > 0)
+            //{
+            //    MessageBox.Show("Recursos encontrados con exito");
+            //    dataGridViewRT.DataSource = tablaRT;
+            //}
+            //else
+            //{
+            //    MessageBox.Show("No se encontro ningun recurso");
+            //}
+            dataGridViewRT.DataSource = ges.ObtenerRecursosTecnologicosDisponibles(nombre);
 
         }
 
-        ////Metodo para cargar grilla
-        //private void cargarGrilla(DataTable tablaRT)
-        //{
-        //    dataGridViewRT.Rows.Clear();
-        //    foreach (DataRow row in tablaRT.Rows)
-        //    {
-        //        dataGridViewRT.Rows.Add(row["tiporecurso"].ToString(), row["numrecurso"].ToString(), row["marca"].ToString(), row["modelo"].ToString());
-        //    }
-        //}
 
 
         private void Pantalla_FormClosing(object sender, FormClosingEventArgs e)
@@ -65,16 +65,6 @@ namespace Proyecto1
 
         }
 
-        //PRIMER METODO EJECUTADO btn que llama caso de uso
-        private void btnRegistrarIng_Click(object sender, EventArgs e)
-        {
-            ges = new Gestor();
-            
-            ges.ObtenerRecursosTecnologicosDisponibles(labelActual.Text);
-        }
-
-
-
         //TomarSeleccionRT y PedirFinFechaMotivo
         private void dataGridViewRT_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -82,7 +72,7 @@ namespace Proyecto1
             if (indice > -1)
             {
                 DataGridViewRow filaSeleccionada = dataGridViewRT.Rows[indice];
-                string nroRT = filaSeleccionada.Cells["numRecurso"].Value.ToString();
+                string nroRT = filaSeleccionada.Cells["Numero"].Value.ToString();
                 MessageBox.Show("Indique Fecha y motivo del mantenimiento");
                 lblfecha.Visible = true;
                 lblMotivo.Visible = true;
@@ -90,7 +80,7 @@ namespace Proyecto1
                 richTextBoxMotivo.Visible = true;
                 labelRT.Visible = true;
                 buttonBuscar.Visible = true;
-                labelRT.Text = "Recurso tecnológico número" + nroRT;
+                labelRT.Text = "Recurso tecnológico número " + nroRT;
 
             }
         }
@@ -98,8 +88,8 @@ namespace Proyecto1
         //TomasFechaYMotivo
         private void buttonBuscar_Click(object sender, EventArgs e)
         {
-            //ges = new Gestor();
-           ges.BuscarTurnosConfirmadosYPendientesDeConfirmacion(labelRT.Text, maskedTextBoxFecha.Text);
+           //ges = new Gestor();
+             ges.BuscarTurnosConfirmadosYPendientesDeConfirmacion(labelRT.Text, maskedTextBoxFecha.Text);
         }
 
         //public void MostrarReservasDeTurnos(DataTable tablaTurnos)

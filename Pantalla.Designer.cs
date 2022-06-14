@@ -39,10 +39,6 @@ namespace Proyecto1
             this.labelUsuario = new System.Windows.Forms.Label();
             this.labelActual = new System.Windows.Forms.Label();
             this.dataGridViewRT = new System.Windows.Forms.DataGridView();
-            this.tiporecurso = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.numrecurso = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.marca = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.modelo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewRT)).BeginInit();
             this.SuspendLayout();
             // 
@@ -139,41 +135,12 @@ namespace Proyecto1
             this.dataGridViewRT.AllowUserToAddRows = false;
             this.dataGridViewRT.AllowUserToDeleteRows = false;
             this.dataGridViewRT.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewRT.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.tiporecurso,
-            this.numrecurso,
-            this.marca,
-            this.modelo});
-            this.dataGridViewRT.Location = new System.Drawing.Point(240, 33);
+            this.dataGridViewRT.Location = new System.Drawing.Point(192, 33);
             this.dataGridViewRT.Name = "dataGridViewRT";
             this.dataGridViewRT.ReadOnly = true;
             this.dataGridViewRT.Size = new System.Drawing.Size(474, 176);
             this.dataGridViewRT.TabIndex = 12;
             this.dataGridViewRT.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewRT_CellClick);
-            // 
-            // tiporecurso
-            // 
-            this.tiporecurso.HeaderText = "Tipo Recurso";
-            this.tiporecurso.Name = "tiporecurso";
-            this.tiporecurso.ReadOnly = true;
-            // 
-            // numrecurso
-            // 
-            this.numrecurso.HeaderText = "Numero Recurso";
-            this.numrecurso.Name = "numrecurso";
-            this.numrecurso.ReadOnly = true;
-            // 
-            // marca
-            // 
-            this.marca.HeaderText = "Marca";
-            this.marca.Name = "marca";
-            this.marca.ReadOnly = true;
-            // 
-            // modelo
-            // 
-            this.modelo.HeaderText = "Modelo";
-            this.modelo.Name = "modelo";
-            this.modelo.ReadOnly = true;
             // 
             // Pantalla
             // 
@@ -213,9 +180,5 @@ namespace Proyecto1
         private System.Windows.Forms.Label labelUsuario;
         private System.Windows.Forms.Label labelActual;
         private System.Windows.Forms.DataGridView dataGridViewRT;
-        private System.Windows.Forms.DataGridViewTextBoxColumn tiporecurso;
-        private System.Windows.Forms.DataGridViewTextBoxColumn numrecurso;
-        private System.Windows.Forms.DataGridViewTextBoxColumn marca;
-        private System.Windows.Forms.DataGridViewTextBoxColumn modelo;
     }
 }

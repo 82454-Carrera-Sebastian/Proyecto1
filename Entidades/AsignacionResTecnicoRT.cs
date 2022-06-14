@@ -97,8 +97,8 @@ namespace Proyecto1.Entidades
                 try
                 {
                     SqlCommand cmd = new SqlCommand();
-                    string numRecurso = row["id"].ToString();
-                    string consulta = "SELECT T.nombre AS tiporecurso, R.numRecurso AS numrecurso, MA.nombre AS marca ,M.nombre AS modelo  FROM RecursoTecnológico R JOIN TipoRecurso T ON R.idTipoRT = T.id JOIN Modelo M ON M.id = R.idModelo JOIN Marca MA ON MA.id = M.idMarca JOIN AsignacionRespTecnRT A ON A.nroRT = R.numRecurso WHERE  R.numRecurso LIKE '" + numRecurso + "' GROUP BY R.idTipoRT, T.nombre, R.numRecurso, MA.nombre ,M.nombre ";
+                    string numRecurso = row["nroRT"].ToString();
+                    string consulta = "SELECT T.nombre AS Tipo, R.numRecurso AS Numero, MA.nombre AS Marca ,M.nombre AS Modelo  FROM RecursoTecnológico R JOIN TipoRecurso T ON R.idTipoRT = T.id JOIN Modelo M ON M.id = R.idModelo JOIN Marca MA ON MA.id = M.idMarca JOIN AsignacionRespTecnRT A ON A.nroRT = R.numRecurso WHERE  R.numRecurso LIKE '" + numRecurso + "' GROUP BY R.idTipoRT, T.nombre, R.numRecurso, MA.nombre ,M.nombre ";
 
                     cmd.Parameters.Clear();
 

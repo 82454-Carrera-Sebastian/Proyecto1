@@ -133,22 +133,23 @@ namespace Proyecto1.Entidades
         //el gestor debe llamar a la clase asignacionResponsableTecnologico para que esta obtenga los datos de
         //los RT que ese cientifico tiene disponible, para ello utilizara la "tabla2" creada en el metodo anterior
 
-        public void ObtenerRecursosTecnologicosDisponibles(string nombre)
+        public DataTable ObtenerRecursosTecnologicosDisponibles(string nombre)
             {
                         
             DataTable tablaRT = art.MostrarRT(ObtenerRTDisponiblesDeRRT(ObtenerUsuarioLogueado(nombre)), RT);
 
-            pan.MostrarRTPorTipoDeRecurso(tablaRT);
+            //pan.MostrarRTPorTipoDeRecurso(tablaRT);
+            return tablaRT;
         }
 
         //Metodo llamado por la pantalla para obtener los turnos que haya que cancelar, llama a metodo de recurso tecnologico
         //El metodo obtener turnos obtendra los turnos que se cancelaran al aceptar el mantenimiento
-        //public void BuscarTurnosConfirmadosYPendientesDeConfirmacion(string nrort, string fechaFin)
-        //{
-        //    DataTable tablaTurnos = RT.ObtenerTurnos(nrort, fechaFin);
+        public void BuscarTurnosConfirmadosYPendientesDeConfirmacion(string nrort, string fechaFin)
+        {
+            DataTable tablaTurnos = RT.ObtenerTurnos(nrort, fechaFin);
 
-        //    pan.MostrarReservasDeTurnos(tablaTurnos);
-        //}
+            pan.MostrarReservasDeTurnos(tablaTurnos);
+        }
 
     }
 }
