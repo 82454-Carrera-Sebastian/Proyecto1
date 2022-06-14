@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -58,5 +59,105 @@ namespace Proyecto1.Entidades
 
         }
 
+        internal string EsActualTurno(string id)
+        {
+            string actual = "";
+            string cadenaConex = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"];
+            SqlConnection cn = new SqlConnection(cadenaConex);
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "SELECT id FROM CambioEstadoTurno WHERE fechaHoraHasta IS NULL AND idTurno LIKE '" + id + "'";
+
+                cmd.Parameters.Clear();
+
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = consulta;
+
+                cn.Open();
+                cmd.Connection = cn;
+
+
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader != null && dataReader.Read())
+                {
+                    actual = dataReader["id"].ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return actual;
+        }
+
+        internal void SetFechaFin(string actual)
+        {
+            string cadenaConex = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"];
+            SqlConnection cn = new SqlConnection(cadenaConex);
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                string consulta = "UPDATE CambioEstadoTurno SET fechaHoraHasta = @fecha WHERE id LIKE '" + actual + "'";
+
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@fecha", DateTime.Now.ToString());
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = consulta;
+
+                cn.Open();
+                cmd.Connection = cn;
+
+
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader != null && dataReader.Read())
+                {
+                    actual = dataReader["id"].ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                cn.Close();
+            }
+        }
+
+        internal void CrearEstado(string id)
+        {
+            string cadenaConex = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"];
+            SqlConnection cn = new SqlConnection(cadenaConex);
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+                string consulta = "INSERT INTO CambioEstadoTurno VALUES (CONVERT(DATETIME,@fechaInicio,103),NULL,@estado,@id)";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@fechaInicio", DateTime.Now.ToString());
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.Parameters.AddWithValue("@estado", "'Cancelado'");
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = consulta;
+
+                cn.Open();
+                cmd.Connection = cn;
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                cn.Close();
+            }
+        }
     }
 }

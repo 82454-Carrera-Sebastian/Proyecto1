@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Proyecto1.Entidades
 {
@@ -17,6 +22,7 @@ namespace Proyecto1.Entidades
         private int FraccionHorarioTurnos;
         private Turno tur;
         private CambioEstadoRT cam;
+        private CambioEstadoTurno camT;
 
         public RecursoTecnológico(int numRT, DateTime fechaAlta)
         {
@@ -172,12 +178,8 @@ namespace Proyecto1.Entidades
             try
             {
                 SqlCommand cmd = new SqlCommand();
-                string consulta = "INSERT INTO Mantenimiento VALUES " + "(CONVERT(DATETIME,@fechaInicio,103),(CONVERT(DATETIME,@fechaFin,103),NULL,@motivo,@idrecurso)";
+                string consulta = "INSERT INTO Mantenimiento (fechaInicio, fechaFin, motivo, idRecurso) VALUES (CONVERT(DATETIME,"+ DateTime.Now.ToString() + ",103), CONVERT(DATETIME,"+ fechaFIN + ",103),'"+ motivo + "',"+ nroRT + ")";
                 cmd.Parameters.Clear();
-                cmd.Parameters.AddWithValue("@fechaInicio", DateTime.Now.ToString());
-                cmd.Parameters.AddWithValue("@nroelem", fechaFIN);
-                cmd.Parameters.AddWithValue("@motivo", motivo);
-                cmd.Parameters.AddWithValue("@idrecurso", nroRT);
                 cmd.CommandType = CommandType.Text;
                 cmd.CommandText = consulta;
 
@@ -200,11 +202,21 @@ namespace Proyecto1.Entidades
         public void ObtenerEstadoActual(string nroRT)
         {
             cam = new CambioEstadoRT();
-            string actual = cam.EsActual();
+            string actual = cam.EsActual(nroRT);
             cam.CambiarEstado(actual);
             cam.CrearEstado(nroRT);
 
         }
+
+        internal void CancelarTurno(string id)
+        {
+            camT = new CambioEstadoTurno();
+            string actual = camT.EsActualTurno(id);
+            camT.SetFechaFin(actual);
+            camT.CrearEstado(id);
+        }
+
+        
     }
 
 }

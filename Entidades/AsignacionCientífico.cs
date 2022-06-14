@@ -48,7 +48,7 @@ namespace Proyecto1.Entidades
             string apellido = pc.MostrarApellido(id);
             string correo = pc.MostrarCorreo(id);
 
-            TablaDatosTurnos.Rows.Add(fechaHoraInicio, nombre, apellido, correo);
+            TablaDatosTurnos.Rows.Add(fechaHoraInicio, nombre, apellido, correo, id);
             return TablaDatosTurnos;
         }
     }

@@ -106,6 +106,7 @@ namespace Proyecto1
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "Login";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Login_FormClosing);
             this.Load += new System.EventHandler(this.Login_Load);

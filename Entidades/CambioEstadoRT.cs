@@ -38,7 +38,7 @@ namespace Proyecto1.Entidades
         }
 
         //Metodo para obtener el estado actual del RT
-        public string EsActual()
+        public string EsActual(string nroRT)
         {
             string actual = "";
             string cadenaConex = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"];
@@ -47,7 +47,7 @@ namespace Proyecto1.Entidades
             {
                 SqlCommand cmd = new SqlCommand();
 
-                string consulta = "SELECT id FROM CambioEstadoRT WHERE fechaHoraHasta IS NULL";
+                string consulta = "SELECT id FROM CambioEstadoRT WHERE fechaHoraHasta IS NULL AND idRecurso LIKE '" + nroRT + "'";
 
                 cmd.Parameters.Clear();
 
@@ -122,8 +122,8 @@ namespace Proyecto1.Entidades
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@fechaInicio", DateTime.Now.ToString());
                 cmd.Parameters.AddWithValue("@id", nroRT);
-                cmd.Parameters.AddWithValue("@nombre", "Mantenimiento");
-                cmd.Parameters.AddWithValue("@ambito", "RecursoTecnologico");
+                cmd.Parameters.AddWithValue("@nombre", "'Mantenimiento'");
+                cmd.Parameters.AddWithValue("@ambito", "'RecursoTecnologico'");
                 cmd.CommandType = CommandType.Text;
                 cmd.CommandText = consulta;
 

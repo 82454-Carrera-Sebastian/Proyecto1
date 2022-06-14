@@ -31,8 +31,8 @@ namespace Proyecto1
         //PRIMER METODO EJECUTADO btn que llama caso de uso
         private void btnRegistrarIng_Click(object sender, EventArgs e)
         {
-            //ges = new Gestor();
-            //ges.ObtenerRecursosTecnologicosDisponibles(labelActual.Text);
+            dataGridViewRT.Visible = true;
+            groupBox1.Visible = true;
             ges = new Gestor();
             MostrarRTPorTipoDeRecurso(labelActual.Text);
         }
@@ -80,19 +80,26 @@ namespace Proyecto1
                 richTextBoxMotivo.Visible = true;
                 labelRT.Visible = true;
                 buttonBuscar.Visible = true;
+                labelseleccion.Visible = true;
                 labelseleccion.Text = nroRT;
+                labelbuscar.Visible = true;
+                dataGridViewRT.Visible = true;
+
 
             }
         }
 
         //TomarFechaYMotivo, una vez ingresados la fecha y motivo del mantenimiento se llama al metodo BuscarTurnos para que
         //obtenga todos los turnos que habra que cancelar
-        //ADemas como este lenguaje es incomprensible este metodo funciona tambien como MostrarReservasDeTurnos
+        //Ademas como este lenguaje es incomprensible este metodo funciona tambien como MostrarReservasDeTurnos
         //Porque despues de horas de intentos no se podia cargar la grilla
         private void buttonBuscar_Click(object sender, EventArgs e)
         {
-             ges = new Gestor();
-             dataGridView1.DataSource = ges.BuscarTurnosConfirmadosYPendientesDeConfirmacion(labelseleccion.Text, maskedTextBoxFecha.Text, ges);
+            groupBox2.Visible = true;
+            labelConfirmar.Visible = true;
+            buttonConfirmar.Visible = true;
+            ges = new Gestor();
+            dataGridView1.DataSource = ges.BuscarTurnosConfirmadosYPendientesDeConfirmacion(labelseleccion.Text, maskedTextBoxFecha.Text, ges);
         }
 
         public void MostrarReservasDeTurnos(DataTable tablaTurnos, Gestor ges)
@@ -106,6 +113,44 @@ namespace Proyecto1
         private void buttonConfirmar_Click(object sender, EventArgs e)
         {
              ges.CrearMantenimiento(labelseleccion.Text, maskedTextBoxFecha.Text, richTextBoxMotivo.Text);
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                string id = Convert.ToString(row.Cells["id"].Value);
+                string Correo = Convert.ToString(row.Cells["Correo"].Value);
+                ges.CancelarTurnos(id);
+                ges.EnviarEmail(Correo, id);
+            }
+            labelRT.Visible = false;
+            labelseleccion.Visible = false;
+            lblfecha.Visible = false;
+            maskedTextBoxFecha.Visible = false;
+            lblMotivo.Visible = false;
+            richTextBoxMotivo.Visible = false;
+            labelbuscar.Visible = false;
+            buttonBuscar.Visible = false;
+            labelConfirmar.Visible = false;
+            buttonConfirmar.Visible = false;
+            groupBox1.Visible = false;
+            groupBox2.Visible = false;
+            dataGridViewRT.Visible = false;
+            MessageBox.Show("Mantenimiento cargado con exito");
+        }
+
+        private void buttonCancelar_Click(object sender, EventArgs e)
+        {
+            labelRT.Visible = false;
+            labelseleccion.Visible = false;
+            lblfecha.Visible = false;
+            maskedTextBoxFecha.Visible = false;
+            lblMotivo.Visible = false;
+            richTextBoxMotivo.Visible = false;
+            labelbuscar.Visible = false;
+            buttonBuscar.Visible = false;
+            labelConfirmar.Visible = false;
+            buttonConfirmar.Visible = false;
+            groupBox1.Visible = false;
+            groupBox2.Visible = false;
+            dataGridViewRT.Visible = false;
         }
     }
 }

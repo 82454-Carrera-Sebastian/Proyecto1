@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Forms;
 
 namespace Proyecto1.Entidades
 {
@@ -81,7 +85,15 @@ namespace Proyecto1.Entidades
         {
 
             DataTable tablaRT = art.MostrarRT(ObtenerRTDisponiblesDeRRT(ObtenerUsuarioLogueado(nombre)), RT);
-
+            if (tablaRT.Rows.Count > 0)
+            {
+                MessageBox.Show("Recursos encontrados con exito");
+                pan.dataGridViewRT.Visible = true; 
+            }
+            else
+            {
+                MessageBox.Show("No se encontro ningun recurso");
+            }
             //pan.MostrarRTPorTipoDeRecurso(tablaRT);
             return tablaRT;
         }
@@ -166,6 +178,7 @@ namespace Proyecto1.Entidades
             TablaDatosTurnos.Columns.Add("Nombre");
             TablaDatosTurnos.Columns.Add("Apellido");
             TablaDatosTurnos.Columns.Add("Correo");
+            TablaDatosTurnos.Columns.Add("id");
             foreach (DataRow row in tablaTurnos.Rows)
             {
                 TablaDatosTurnos = RT.ObtenerDatosReserva(row["id"].ToString(), TablaDatosTurnos);
@@ -184,7 +197,6 @@ namespace Proyecto1.Entidades
             RT = new RecursoTecnológico();
             RT.CrearMantenimiento(nroRT, fechaFIN, motivo);
             BuscarEstadoActual(nroRT, RT);
-            CancelarTurnos();
         }
 
         //Metodo llamado por el gestor que actualizara los estados, llamara al metodo de RT
@@ -193,9 +205,39 @@ namespace Proyecto1.Entidades
             RT.ObtenerEstadoActual(nroRT);
         }
 
-        public void CancelarTurnos()
+        //Metodo llamado por la pantalla para cancelar los turnos mostrados en grilla
+        public void CancelarTurnos(string id)
         {
+            RT = new RecursoTecnológico();
+            RT.CancelarTurno(id);
+        }
 
+        public void EnviarEmail(string correoDestino, string id)
+        {
+            try
+            {
+                MailMessage correo = new MailMessage();
+                correo.From = new MailAddress("mileabrilmusie@hotmail.com", "Sistema", System.Text.Encoding.UTF8);//Correo de salida
+                correo.To.Add(correoDestino); //Correo destino?
+                correo.Subject = "Cancelacion de turno"; //Asunto
+                correo.Body = "Estimado responsable cientifico, le informamos que su turno " +id+ " ha sido cancelado por mantenimiento de RT "; //Mensaje del correo
+                correo.IsBodyHtml = true;
+                correo.Priority = MailPriority.Normal;
+                SmtpClient smtp = new SmtpClient();
+                smtp.UseDefaultCredentials = false;
+                smtp.Host = "smtp.office365.com"; //Host del servidor de correo
+                smtp.Port = 587; //Puerto de salida
+                smtp.Credentials = new System.Net.NetworkCredential("mileabrilmusie@hotmail.com", "1dao43272769");//Cuenta de correo
+                ServicePointManager.ServerCertificateValidationCallback = delegate (object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
+                smtp.EnableSsl = true;//True si el servidor de correo permite ssl
+                smtp.Send(correo);
+                MessageBox.Show("Mail generado y enviado con éxito");
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
     }
