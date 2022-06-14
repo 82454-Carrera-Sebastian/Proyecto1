@@ -80,52 +80,32 @@ namespace Proyecto1
                 richTextBoxMotivo.Visible = true;
                 labelRT.Visible = true;
                 buttonBuscar.Visible = true;
-                labelRT.Text = "Recurso tecnológico número " + nroRT;
+                labelseleccion.Text = nroRT;
 
             }
         }
 
-        //TomasFechaYMotivo
+        //TomarFechaYMotivo, una vez ingresados la fecha y motivo del mantenimiento se llama al metodo BuscarTurnos para que
+        //obtenga todos los turnos que habra que cancelar
+        //ADemas como este lenguaje es incomprensible este metodo funciona tambien como MostrarReservasDeTurnos
+        //Porque despues de horas de intentos no se podia cargar la grilla
         private void buttonBuscar_Click(object sender, EventArgs e)
         {
-           //ges = new Gestor();
-             ges.BuscarTurnosConfirmadosYPendientesDeConfirmacion(labelRT.Text, maskedTextBoxFecha.Text);
+             ges = new Gestor();
+             dataGridView1.DataSource = ges.BuscarTurnosConfirmadosYPendientesDeConfirmacion(labelseleccion.Text, maskedTextBoxFecha.Text, ges);
         }
 
-        //public void MostrarReservasDeTurnos(DataTable tablaTurnos)
-        //{
-        //    string cadenaConex = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"];
-        //    SqlConnection cn = new SqlConnection(cadenaConex);
-        //    try
-        //    {
-        //        foreach (DataRow row in tablaTurnos.Rows)
-        //        {
-        //            SqlCommand cmd = new SqlCommand();
+        public void MostrarReservasDeTurnos(DataTable tablaTurnos, Gestor ges)
+        {
+            //ges = new Gestor();
+             
+             //dataGridView1.DataSource = ges.ObtenerDatosReserva(tablaTurnos);
+        }
 
-        //            string consulta = "SELECT T.fechaHoraInicio, P.apellido, P.nombre, P.correoInst FROM Turno T JOIN PersonalCientifico P ON T.idPersonal = P.legajo WHERE T.id LIKE '" + row["id"].ToString() + "'";
-
-        //            cmd.Parameters.Clear();
-
-        //            cmd.CommandType = CommandType.Text;
-        //            cmd.CommandText = consulta;
-
-        //            cn.Open();
-        //            cmd.Connection = cn;
-
-
-
-        //        }
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw;
-        //    }
-        //    finally
-        //    {
-        //        cn.Close();
-        //    }
-
-        //}
+        //Confirma matenimiento, llama al gestor para que se encargue
+        private void buttonConfirmar_Click(object sender, EventArgs e)
+        {
+             ges.CrearMantenimiento(labelseleccion.Text, maskedTextBoxFecha.Text, richTextBoxMotivo.Text);
+        }
     }
 }

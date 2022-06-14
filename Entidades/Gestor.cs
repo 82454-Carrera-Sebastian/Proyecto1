@@ -75,6 +75,17 @@ namespace Proyecto1.Entidades
             set => UsuarioLogueado = value;
         }
 
+        //el gestor debe llamar a la clase asignacionResponsableTecnologico para que esta obtenga los datos de
+        //los RT que ese cientifico tiene disponible, para ello utilizara la "tabla2" creada en el metodo anterior
+        public DataTable ObtenerRecursosTecnologicosDisponibles(string nombre)
+        {
+
+            DataTable tablaRT = art.MostrarRT(ObtenerRTDisponiblesDeRRT(ObtenerUsuarioLogueado(nombre)), RT);
+
+            //pan.MostrarRTPorTipoDeRecurso(tablaRT);
+            return tablaRT;
+        }
+
         //Obtener legajo de usuario a traves de la clase usuario
         //se pasa el nombre por parametro y se envia el mismo la clase sesion
         public string ObtenerUsuarioLogueado(string nombre)
@@ -130,25 +141,61 @@ namespace Proyecto1.Entidades
             return tabla2;
        }
 
-        //el gestor debe llamar a la clase asignacionResponsableTecnologico para que esta obtenga los datos de
-        //los RT que ese cientifico tiene disponible, para ello utilizara la "tabla2" creada en el metodo anterior
-
-        public DataTable ObtenerRecursosTecnologicosDisponibles(string nombre)
-            {
-                        
-            DataTable tablaRT = art.MostrarRT(ObtenerRTDisponiblesDeRRT(ObtenerUsuarioLogueado(nombre)), RT);
-
-            //pan.MostrarRTPorTipoDeRecurso(tablaRT);
-            return tablaRT;
-        }
 
         //Metodo llamado por la pantalla para obtener los turnos que haya que cancelar, llama a metodo de recurso tecnologico
         //El metodo obtener turnos obtendra los turnos que se cancelaran al aceptar el mantenimiento
-        public void BuscarTurnosConfirmadosYPendientesDeConfirmacion(string nrort, string fechaFin)
+        public DataTable BuscarTurnosConfirmadosYPendientesDeConfirmacion(string nrort, string fechaFin, Gestor ges)
         {
             DataTable tablaTurnos = RT.ObtenerTurnos(nrort, fechaFin);
 
-            pan.MostrarReservasDeTurnos(tablaTurnos);
+            //ObtenerDatosReserva(tablaTurnos);
+
+            //pan.MostrarReservasDeTurnos(tablaTurnos, ges);
+            DataTable TablaDatosTurnos = ObtenerDatosReserva(tablaTurnos);
+            return TablaDatosTurnos;
+        }
+
+        //metodo llamado por el metodo BuscarTurnosConfirmadosYPendientesDeConfirmacion del mismo gestor para obtener los datos de los 
+        //turnos a cancelar.
+        //El metodo creara una tabla que sera llenada a traves de un ciclo en cada turno con los datos a mostrar en grilla
+        //primero llamara al metodo ObtenerDatosReserva del RT
+        public DataTable ObtenerDatosReserva(DataTable tablaTurnos)
+        {
+            DataTable TablaDatosTurnos = new DataTable("TablaDatosTurnos");
+            TablaDatosTurnos.Columns.Add("fechaHoraInicio");
+            TablaDatosTurnos.Columns.Add("Nombre");
+            TablaDatosTurnos.Columns.Add("Apellido");
+            TablaDatosTurnos.Columns.Add("Correo");
+            foreach (DataRow row in tablaTurnos.Rows)
+            {
+                TablaDatosTurnos = RT.ObtenerDatosReserva(row["id"].ToString(), TablaDatosTurnos);
+
+            }
+            //DataView dv = TablaDatosTurnos.DefaultView;
+            //dv.Sort = "Nombre";
+            //DataTable TablaDatosTurnosAgrupada = dv.ToTable();
+            //return TablaDatosTurnosAgrupada;
+            return TablaDatosTurnos;
+
+        }
+
+        public void CrearMantenimiento(string nroRT, string fechaFIN, string motivo)
+        {
+            RT = new RecursoTecnológico();
+            RT.CrearMantenimiento(nroRT, fechaFIN, motivo);
+            BuscarEstadoActual(nroRT, RT);
+            CancelarTurnos();
+        }
+
+        //Metodo llamado por el gestor que actualizara los estados, llamara al metodo de RT
+        public void BuscarEstadoActual(string nroRT, RecursoTecnológico RT)
+        {
+            RT.ObtenerEstadoActual(nroRT);
+        }
+
+        public void CancelarTurnos()
+        {
+
         }
 
     }

@@ -49,6 +49,7 @@ namespace Proyecto1.Entidades
             DateTime fechaTurno = Convert.ToDateTime(fechaInicio, Culture);
             TimeSpan tSpan = fechaTurno - fechaFinMantenimiento;
             int dias = tSpan.Days;
+            es = new Estado();
             if (dias <= 0 && es.esCancelable(estado))
             {
                 resultado = true;
