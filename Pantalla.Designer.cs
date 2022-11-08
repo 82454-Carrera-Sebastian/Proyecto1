@@ -100,7 +100,7 @@ namespace Proyecto1
             // 
             this.maskedTextBoxFecha.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.maskedTextBoxFecha.Location = new System.Drawing.Point(235, 141);
-            this.maskedTextBoxFecha.Mask = "00/00/0000 00:00";
+            this.maskedTextBoxFecha.Mask = "00/00/0000";
             this.maskedTextBoxFecha.Name = "maskedTextBoxFecha";
             this.maskedTextBoxFecha.Size = new System.Drawing.Size(118, 23);
             this.maskedTextBoxFecha.TabIndex = 7;

@@ -125,7 +125,7 @@ namespace Proyecto1.Entidades
             try
             {
                 SqlCommand cmd = new SqlCommand();
-                string consulta = "SELECT id FROM Turno WHERE idRecurso LIKE '" + nrort + "'";
+                string consulta = "SELECT id FROM Turno WHERE idRecurso LIKE '" + nrort + "' AND fechaHoraInicio > GETDATE()";
 
                 cmd.Parameters.Clear();
 
@@ -170,26 +170,34 @@ namespace Proyecto1.Entidades
             return TablaDatosTurnos;
         }
 
-        //metodo llamado para el gestor para cargar el mantenimiento
+        //metodo llamado para el gestor para cargar el mantenimiento 
+        //CONVERT(DATETIME," + fechaFIN + ",103)
         public void CrearMantenimiento(string nroRT, string fechaFIN, string motivo)
         {
             string cadenaConex = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"];
             SqlConnection cn = new SqlConnection(cadenaConex);
+            SqlTransaction objtransaction = null;
             try
             {
                 SqlCommand cmd = new SqlCommand();
-                string consulta = "INSERT INTO Mantenimiento (fechaInicio, fechaFin, motivo, idRecurso) VALUES (CONVERT(DATETIME,"+ DateTime.Now.ToString() + ",103), CONVERT(DATETIME,"+ fechaFIN + ",103),'"+ motivo + "',"+ nroRT + ")";
+                string consulta = "INSERT INTO Mantenimiento (fechaInicio, fechaFin, motivo, idRecurso) VALUES (GETDATE(), CONVERT(datetime,'" + fechaFIN + "',105),'" + motivo + "',"+ nroRT + ")";
                 cmd.Parameters.Clear();
                 cmd.CommandType = CommandType.Text;
                 cmd.CommandText = consulta;
 
                 cn.Open();
+                objtransaction = cn.BeginTransaction("CrearMantenimiento");
+                cmd.Transaction = objtransaction;
                 cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+                objtransaction.Commit();
+
+
 
             }
             catch (Exception ex)
             {
-                throw;
+                objtransaction.Rollback();
             }
             finally
             {

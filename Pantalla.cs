@@ -102,41 +102,64 @@ namespace Proyecto1
             dataGridView1.DataSource = ges.BuscarTurnosConfirmadosYPendientesDeConfirmacion(labelseleccion.Text, maskedTextBoxFecha.Text, ges);
         }
 
-        public void MostrarReservasDeTurnos(DataTable tablaTurnos, Gestor ges)
-        {
-            //ges = new Gestor();
-             
-             //dataGridView1.DataSource = ges.ObtenerDatosReserva(tablaTurnos);
-        }
+
 
         //Confirma matenimiento, llama al gestor para que se encargue
         private void buttonConfirmar_Click(object sender, EventArgs e)
         {
-             ges.CrearMantenimiento(labelseleccion.Text, maskedTextBoxFecha.Text, richTextBoxMotivo.Text);
+            ges.CrearMantenimiento(labelseleccion.Text, maskedTextBoxFecha.Text, richTextBoxMotivo.Text, obtenerFechas(), obtenerContactos(), obtenerIDs());
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
                 string id = Convert.ToString(row.Cells["id"].Value);
-                string Correo = Convert.ToString(row.Cells["Correo"].Value);
+                //string Correo = Convert.ToString(row.Cells["Correo"].Value);
                 ges.CancelarTurnos(id);
-                ges.EnviarEmail(Correo, id);
+                //ges.EnviarEmail(Correo, id);
             }
-            labelRT.Visible = false;
-            labelseleccion.Visible = false;
-            lblfecha.Visible = false;
-            maskedTextBoxFecha.Visible = false;
-            lblMotivo.Visible = false;
-            richTextBoxMotivo.Visible = false;
-            labelbuscar.Visible = false;
-            buttonBuscar.Visible = false;
-            labelConfirmar.Visible = false;
-            buttonConfirmar.Visible = false;
-            groupBox1.Visible = false;
-            groupBox2.Visible = false;
-            dataGridViewRT.Visible = false;
+            limpiarPantalla();
             MessageBox.Show("Mantenimiento cargado con exito");
         }
 
+
+        private string[] obtenerContactos()
+        {
+            List<string> contactos = new List<string>();
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                //string id = Convert.ToString(row.Cells["id"].Value);
+                string Correo = Convert.ToString(row.Cells["Correo"].Value);
+                contactos.Add(Correo);
+            }
+            return contactos.ToArray();
+        }
+
+        public string[] obtenerIDs()
+        {
+            List<string> listaIDTurnos = new List<string>();
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                string id = Convert.ToString(row.Cells["id"].Value);
+                listaIDTurnos.Add(id);
+            }
+            return listaIDTurnos.ToArray();
+        }
+
+        public string[] obtenerFechas()
+        {
+            List<string> listaFechas = new List<string>();
+            foreach(DataGridViewRow row in dataGridView1.Rows)
+            {
+                string fecha = Convert.ToString(row.Cells["fechaHoraInicio"].Value);
+                listaFechas.Add(fecha);
+            }
+            return listaFechas.ToArray();
+        }
+
         private void buttonCancelar_Click(object sender, EventArgs e)
+        {
+            limpiarPantalla();
+        }
+
+        public void limpiarPantalla()
         {
             labelRT.Visible = false;
             labelseleccion.Visible = false;

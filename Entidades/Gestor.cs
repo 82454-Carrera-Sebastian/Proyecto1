@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 namespace Proyecto1.Entidades
 {
-    public class Gestor
+    internal class Gestor : ISujeto
     {
         private string DatosReservasTurnos; //Datos de reservas de los turnos confirmados y pendientes de confirmación
         private string CorreoRRT;
@@ -27,6 +27,10 @@ namespace Proyecto1.Entidades
         private AsignacionResTecnicoRT art;
         private RecursoTecnológico RT;
         private Pantalla pan;
+        private IObservadorMantenimientoCorrectivo suscriptores;
+        private string[] contactos;
+        private string[] ids;
+        private string[] fechas;
 
         public Gestor()
         {
@@ -37,11 +41,19 @@ namespace Proyecto1.Entidades
             pan = new Pantalla(usu);
         }
 
+        public void SetDatosCientificos(string[] Contactos, string[] IDs, string[] Fechas)
+        {
+            this.contactos = Contactos;
+            this.ids = IDs;
+            this.fechas = Fechas;
+        }
+
         public string DatosDeReservasDeTurnos
         {
             get => DatosReservasTurnos;
             set => DatosReservasTurnos = value;
         }
+
 
         public string CorreoDeRRT
         {
@@ -79,6 +91,7 @@ namespace Proyecto1.Entidades
             set => UsuarioLogueado = value;
         }
 
+
         //el gestor debe llamar a la clase asignacionResponsableTecnologico para que esta obtenga los datos de
         //los RT que ese cientifico tiene disponible, para ello utilizara la "tabla2" creada en el metodo anterior
         public DataTable ObtenerRecursosTecnologicosDisponibles(string nombre)
@@ -94,7 +107,6 @@ namespace Proyecto1.Entidades
             {
                 MessageBox.Show("No se encontro ningun recurso");
             }
-            //pan.MostrarRTPorTipoDeRecurso(tablaRT);
             return tablaRT;
         }
 
@@ -184,21 +196,39 @@ namespace Proyecto1.Entidades
                 TablaDatosTurnos = RT.ObtenerDatosReserva(row["id"].ToString(), TablaDatosTurnos);
 
             }
-            //DataView dv = TablaDatosTurnos.DefaultView;
-            //dv.Sort = "Nombre";
-            //DataTable TablaDatosTurnosAgrupada = dv.ToTable();
-            //return TablaDatosTurnosAgrupada;
             return TablaDatosTurnos;
 
         }
 
-        public void CrearMantenimiento(string nroRT, string fechaFIN, string motivo)
+        public void CrearMantenimiento(string nroRT, string fechaFIN, string motivo, string[] fechas,string[] contactos, string[] ids)
         {
-            RT = new RecursoTecnológico();
+            SetDatosCientificos(contactos, ids, fechas);
             RT.CrearMantenimiento(nroRT, fechaFIN, motivo);
+            InterfazMail interfazMail = new InterfazMail();
+            Suscribir(interfazMail);
             BuscarEstadoActual(nroRT, RT);
+            Notificar();
         }
 
+        public void Suscribir(IObservadorMantenimientoCorrectivo observador)
+        {
+            this.suscriptores = observador;
+        }
+
+        public void Notificar()
+        {
+            
+            for(int i = 0; i < contactos.Length; i++)
+            {
+                
+                suscriptores.EnviarNotificacion(fechas[i], contactos[i], ids[i]);
+            }
+        }
+
+        public void Quitar(IObservadorMantenimientoCorrectivo observador) 
+        {
+            throw new NotImplementedException();
+        }
         //Metodo llamado por el gestor que actualizara los estados, llamara al metodo de RT
         public void BuscarEstadoActual(string nroRT, RecursoTecnológico RT)
         {
@@ -209,36 +239,7 @@ namespace Proyecto1.Entidades
         public void CancelarTurnos(string id)
         {
             RT = new RecursoTecnológico();
-            RT.CancelarTurno(id);
+            RT.CancelarTurno(id); //Cancela turnos anteriores a la fecha actual
         }
-
-        public void EnviarEmail(string correoDestino, string id)
-        {
-            try
-            {
-                MailMessage correo = new MailMessage();
-                correo.From = new MailAddress("mileabrilmusie@hotmail.com", "Sistema", System.Text.Encoding.UTF8);//Correo de salida
-                correo.To.Add(correoDestino); //Correo destino?
-                correo.Subject = "Cancelacion de turno"; //Asunto
-                correo.Body = "Estimado responsable cientifico, le informamos que su turno " +id+ " ha sido cancelado por mantenimiento de RT "; //Mensaje del correo
-                correo.IsBodyHtml = true;
-                correo.Priority = MailPriority.Normal;
-                SmtpClient smtp = new SmtpClient();
-                smtp.UseDefaultCredentials = false;
-                smtp.Host = "smtp.office365.com"; //Host del servidor de correo
-                smtp.Port = 587; //Puerto de salida
-                smtp.Credentials = new System.Net.NetworkCredential("mileabrilmusie@hotmail.com", "1dao43272769");//Cuenta de correo
-                ServicePointManager.ServerCertificateValidationCallback = delegate (object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
-                smtp.EnableSsl = true;//True si el servidor de correo permite ssl
-                smtp.Send(correo);
-                MessageBox.Show("Mail generado y enviado con éxito");
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
-
     }
 }

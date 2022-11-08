@@ -59,7 +59,7 @@ namespace Proyecto1.Entidades
         public bool esCancelable(string estado)
         {
             bool resultado = false;
-            if (estado == "confirmado" || estado == "pendiente")
+            if (estado == "pdteConfirmacion" || estado == "Reservado") //Cambiar nombres de estados "Generado" por "pendienteConfirmacion"
             {
                 resultado = true;
             }
